@@ -1,5 +1,12 @@
 L.Control.ControlHider = L.Control.extend({
-    initialize: function(controls) {
+	options: {
+		position: 'topleft',
+		imageOpen: '../src/open.png',
+		imageClosed: '../src/closed.png'
+	},
+	
+	initialize: function(controls, options) {
+		L.setOptions(this, options);
         this._controls = controls; //e.g. [zoomControl, locateControl];
         this._styles = [];
         this._showing = true;
@@ -7,10 +14,11 @@ L.Control.ControlHider = L.Control.extend({
 
     onAdd: function(map) {
         var container = L.DomUtil.create('div', '');
-        container.style.width = '20px';
-        container.style.height = '20px';
-        container.style['background-color'] = 'red';
-        L.DomEvent.on(container, 'click', function(){
+		container.id = 'hider-control';
+		var link = L.DomUtil.create('a', '', container);
+		this._img = L.DomUtil.create('img', '', link);
+		this._img.src = this.options.imageOpen;
+        L.DomEvent.on(link, 'click', function(){
             this._toggle();
         }, this);
         return container;
@@ -27,11 +35,11 @@ L.Control.ControlHider = L.Control.extend({
     },
    
     _makeMenuHideable: function() {
-        this._container.style['background-color'] = 'red';
+        this._img.src = this.options.imageOpen;
     },
    
     _makeMenuShowable: function() {
-        this._container.style['background-color'] = 'blue';
+        this._img.src = this.options.imageClosed;
     },
 
     _hideControls: function() {
