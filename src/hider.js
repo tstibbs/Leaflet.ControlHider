@@ -2,7 +2,9 @@ L.Control.ControlHider = L.Control.extend({
 	options: {
 		position: 'topleft',
 		imageOpen: '../src/open.png',
-		imageClosed: '../src/closed.png'
+		imageClosed: '../src/closed.png',
+		tooltipOpen: 'Click to hide controls',
+		tooltipClosed: 'Click to show controls'
 	},
 	
 	initialize: function(controls, options) {
@@ -16,8 +18,9 @@ L.Control.ControlHider = L.Control.extend({
         var container = L.DomUtil.create('div', '');
 		container.id = 'hider-control';
 		var link = L.DomUtil.create('a', '', container);
+		link.href="#";
 		this._img = L.DomUtil.create('img', '', link);
-		this._img.src = this.options.imageOpen;
+		this._makeMenuHideable();
         L.DomEvent.on(link, 'click', function(){
             this._toggle();
         }, this);
@@ -36,10 +39,12 @@ L.Control.ControlHider = L.Control.extend({
    
     _makeMenuHideable: function() {
         this._img.src = this.options.imageOpen;
+        this._img.title = this.options.tooltipOpen;
     },
    
     _makeMenuShowable: function() {
         this._img.src = this.options.imageClosed;
+        this._img.title = this.options.tooltipClosed;
     },
 
     _hideControls: function() {
