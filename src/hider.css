@@ -1,3 +1,15 @@
 #hider-control {
 	margin-left: 0px
 }
+
+#hider-control.closed div.icon {
+    background-image: url("closed.png");
+    width: 13px;
+    height: 25px;
+}
+
+#hider-control.open div.icon {
+    background-image: url("open.png");
+    width: 37px;
+    height: 13px;
+}
