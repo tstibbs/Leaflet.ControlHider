@@ -17,7 +17,10 @@ L.Control.ControlHider = L.Control.extend({
 		this._container.id = 'hider-control';
 		var link = L.DomUtil.create('a', '', this._container);
 		link.href="#";
-		this._img = L.DomUtil.create('div', 'icon', link);
+		this._imgClosed = L.DomUtil.create('div', 'icon icon-closed', link);
+        this._imgClosed.title = this.options.tooltipClosed;
+		this._imgOpen = L.DomUtil.create('div', 'icon icon-open', link);
+        this._imgOpen.title = this.options.tooltipOpen;
 		this._makeMenuHideable();
         L.DomEvent.on(link, 'click', function(){
             this._toggle();
@@ -38,13 +41,11 @@ L.Control.ControlHider = L.Control.extend({
     _makeMenuHideable: function() {
 		L.DomUtil.addClass(this._container, 'open');
 		L.DomUtil.removeClass(this._container, 'closed');
-        this._img.title = this.options.tooltipOpen;
     },
    
     _makeMenuShowable: function() {
 		L.DomUtil.addClass(this._container, 'closed');
 		L.DomUtil.removeClass(this._container, 'open');
-        this._img.title = this.options.tooltipClosed;
     },
 
     _hideControls: function() {

@@ -1,31 +1,47 @@
 #hider-control {
-	margin-left: 0px
+	margin-left: 0px;
+	height: 27px; /* max of all the image heights */
 }
 
 /* Non-mobile icons */
 
-#hider-control.closed div.icon {
+#hider-control div.icon.icon-closed {
     background-image: url("closed.png");
     width: 13px;
     height: 25px;
+	left: -13px;
 }
 
-#hider-control.open div.icon {
+#hider-control div.icon.icon-open {
     background-image: url("open.png");
     width: 37px;
     height: 13px;
+	left: -37px;
 }
 
 /* Mobile icons */
 
-.leaflet-touch #hider-control.closed div.icon {
+.leaflet-touch #hider-control div.icon.icon-closed {
     background-image: url("closed-mobile.png");
     width: 18px;
     height: 26px;
+	left: -18px;
 }
 
-.leaflet-touch #hider-control.open div.icon {
+.leaflet-touch #hider-control div.icon.icon-open {
     background-image: url("open-mobile.png");
     width: 37px;
     height: 18px;
+	left: -37px;
+}
+
+/* Displaying the right icon at the right time */
+
+#hider-control div.icon {
+	position: absolute;
+	transition: left 0.2s ease-in-out;
+}
+
+#hider-control.closed div.icon.icon-closed, #hider-control.open div.icon.icon-open {
+	left: 0px
 }
