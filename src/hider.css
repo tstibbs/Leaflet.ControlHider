@@ -2,6 +2,8 @@
 	margin-left: 0px
 }
 
+/* Non-mobile icons */
+
 #hider-control.closed div.icon {
     background-image: url("closed.png");
     width: 13px;
@@ -12,4 +14,18 @@
     background-image: url("open.png");
     width: 37px;
     height: 13px;
+}
+
+/* Mobile icons */
+
+.leaflet-touch #hider-control.closed div.icon {
+    background-image: url("closed-mobile.png");
+    width: 18px;
+    height: 26px;
+}
+
+.leaflet-touch #hider-control.open div.icon {
+    background-image: url("open-mobile.png");
+    width: 37px;
+    height: 18px;
 }
