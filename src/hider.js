@@ -52,9 +52,10 @@ L.Control.ControlHider = L.Control.extend({
         this._makeMenuShowable();
         for (var i = 0; i < this._controls.length; i++) {
             var element = this._controls[i]._container;
-            this._styles[i] = element.style.opacity; //so we can put it back, just in case it's been set directly on the element
-			element.style.transition = 'opacity .3s ease';
-            element.style.opacity = '0';
+			var right = element.getBoundingClientRect().right + 5;//random 5 for box shadows etc until I can work out how to reliably get them too
+            this._styles[i] = element.style.transform; //so we can put it back, just in case it's been set directly on the element
+			element.style.transition = 'transform .3s ease';
+            element.style.transform = 'translateX(-' + right + 'px)';
         }
     },
 
@@ -62,7 +63,7 @@ L.Control.ControlHider = L.Control.extend({
         this._makeMenuHideable();
         for (var i = 0; i < this._controls.length; i++) {
             var element = this._controls[i]._container;
-            element.style.opacity = this._styles[i]; // if the style was empty string, then this is fine, it should clear it and revert to whatever css there was
+            element.style.transform = this._styles[i]; // if the style was empty string, then this is fine, it should clear it and revert to whatever css there was
         }
     }
 });
