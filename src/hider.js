@@ -8,7 +8,8 @@ L.Control.ControlHider = L.Control.extend({
 	initialize: function(controls, options) {
 		L.setOptions(this, options);
         this._controls = controls; //e.g. [zoomControl, locateControl];
-        this._styles = [];
+        this._styleTransform = [];
+		this._styleDisplay = [];
         this._showing = true;
     },
 
@@ -53,17 +54,25 @@ L.Control.ControlHider = L.Control.extend({
         for (var i = 0; i < this._controls.length; i++) {
             var element = this._controls[i]._container;
 			var right = element.getBoundingClientRect().right + 5;//random 5 for box shadows etc until I can work out how to reliably get them too
-            this._styles[i] = element.style.transform; //so we can put it back, just in case it's been set directly on the element
-			element.style.transition = 'transform .3s ease';
+            this._styleTransform[i] = element.style.transform; //so we can put it back, just in case it's been set directly on the element
+			this._styleDisplay[i] = element.style.display; //so we can put it back, just in case it's been set directly on the element
+			element.style.transition = 'transform 0.3s ease';
             element.style.transform = 'translateX(-' + right + 'px)';
         }
+		setTimeout(function() {
+			for (var i = 0; i < this._controls.length; i++) {
+				var element = this._controls[i]._container;
+				element.style.display = 'none';
+			}
+		}.bind(this), 300);
     },
 
     _showControls: function() {
         this._makeMenuHideable();
         for (var i = 0; i < this._controls.length; i++) {
             var element = this._controls[i]._container;
-            element.style.transform = this._styles[i]; // if the style was empty string, then this is fine, it should clear it and revert to whatever css there was
+            element.style.transform = this._styleTransform[i]; // if the style was empty string, then this is fine, it should clear it and revert to whatever css there was
+			element.style.display = this._styleDisplay[i]; // if the style was empty string, then this is fine, it should clear it and revert to whatever css there was
         }
     }
 });
