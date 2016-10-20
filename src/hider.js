@@ -51,12 +51,15 @@ L.Control.ControlHider = L.Control.extend({
 
     _hideControls: function() {
         this._makeMenuShowable();
+		var top = this._container.getBoundingClientRect().top
 		this._forEachControl(function(element, i) {
-			var right = element.getBoundingClientRect().right + 5;//random 5 for box shadows etc until I can work out how to reliably get them too
+			var bounds = element.getBoundingClientRect();
+			var xOffset = 0 - (bounds.right + 5);//random 5 for box shadows etc until I can work out how to reliably get them too
+			var yOffset = top - bounds.top;
             this._styleTransform[i] = element.style.transform; //so we can put it back, just in case it's been set directly on the element
 			this._styleDisplay[i] = element.style.display; //so we can put it back, just in case it's been set directly on the element
 			element.style.transition = 'transform 0.3s ease';
-            element.style.transform = 'translateX(-' + right + 'px)';
+            element.style.transform = 'translate(' + xOffset + 'px, ' + yOffset + 'px)';
 		}.bind(this));
 		//fallback for browsers that don't support the translate - but wait until the transition has completed before we hide the elements
 		setTimeout(function() {
