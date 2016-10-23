@@ -30,9 +30,9 @@
 
 .leaflet-touch #hider-control div.icon.icon-open {
     background-image: url("open-mobile.png");
-    width: 37px;
+    width: 44px;
     height: 18px;
-	left: -37px;
+	left: -44px;
 }
 
 /* Displaying the right icon at the right time */
