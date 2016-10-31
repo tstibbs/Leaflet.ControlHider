@@ -2,6 +2,8 @@ This is a simple control that enables the user to show and hide other controls (
 
 [Live demo](https://tstibbs.github.io/Leaflet.ControlHider/examples/index.html)
 
+[Live demo with controls starting hidden](https://tstibbs.github.io/Leaflet.ControlHider/examples/hidden.html)
+
 ## How to use it
 
 Create the controls that you want to be controlled by the hider:

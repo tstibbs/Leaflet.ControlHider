@@ -2,7 +2,8 @@ L.Control.ControlHider = L.Control.extend({
 	options: {
 		position: 'topleft',
 		tooltipOpen: 'Click to hide controls',
-		tooltipClosed: 'Click to show controls'
+		tooltipClosed: 'Click to show controls',
+		visibleByDefault: true // whether all controls should be visible on startup or not 
 	},
 	
 	initialize: function(controls, options) {
@@ -10,7 +11,6 @@ L.Control.ControlHider = L.Control.extend({
         this._controls = controls; //e.g. [zoomControl, locateControl];
         this._styleTransform = [];
 		this._styleDisplay = [];
-        this._showing = true;
     },
 
     onAdd: function(map) {
@@ -22,12 +22,43 @@ L.Control.ControlHider = L.Control.extend({
         this._imgClosed.title = this.options.tooltipClosed;
 		this._imgOpen = L.DomUtil.create('div', 'icon icon-open', link);
         this._imgOpen.title = this.options.tooltipOpen;
-		this._makeMenuHideable();
+		if (this.options.visibleByDefault) {
+			this._makeMenuHideable();
+			this._showing = true;
+		} else {
+            this._makeMenuShowable();
+            this._showing = false;
+            this._listenForControlsAdded();
+		}
         L.DomEvent.on(link, 'click', function(){
             this._toggle();
         }, this);
         return this._container;
     },
+	
+	_listenForControlsAdded: function() {
+		for (var i = 0; i < this._controls.length; i++) {
+			(function(i) {
+				var control = this._controls[i];
+				if (control.getContainer() != null) {
+					//already added
+					var element = control.getContainer();
+					this._hideControl(element, i);
+					element.style.display = 'none';
+				} else {
+					//not added yet and no way to listen for control added events, so we have to inject one ourselves
+					var oldAddTo = control.addTo;
+					control.addTo = function (map) {
+						var context = oldAddTo.call(control, map);
+						this._hideControl(control.getContainer(), i);
+						control.getContainer().style.display = 'none';
+						control.addTo = oldAddTo;
+						return context;
+					}.bind(this);
+				}
+			}.bind(this))(i);//just scoping
+		}
+	},
    
     _toggle: function() {
         if (this._showing) {
@@ -51,16 +82,9 @@ L.Control.ControlHider = L.Control.extend({
 
     _hideControls: function() {
         this._makeMenuShowable();
-		var top = this._container.getBoundingClientRect().top
 		this._forEachControl(function(element, i) {
-			var bounds = element.getBoundingClientRect();
-			var xOffset = 0 - (bounds.right + 5);//random 5 for box shadows etc until I can work out how to reliably get them too
-			var yOffset = top - bounds.top;
-            this._styleTransform[i] = element.style.transform; //so we can put it back, just in case it's been set directly on the element
-			this._styleDisplay[i] = element.style.display; //so we can put it back, just in case it's been set directly on the element
-			element.style.transition = 'transform 0.3s ease';
-            element.style.transform = 'translate(' + xOffset + 'px, ' + yOffset + 'px)';
-		}.bind(this));
+			this._hideControl(element, i);
+		}.bind(this));//this._hideControl.bind(this));
 		//fallback for browsers that don't support the translate - but wait until the transition has completed before we hide the elements
 		setTimeout(function() {
 			this._forEachControl(function(element, i) {
@@ -68,6 +92,17 @@ L.Control.ControlHider = L.Control.extend({
 			}.bind(this));
 		}.bind(this), 300);
     },
+	
+	_hideControl: function(element, i) {
+		var top = this._container.getBoundingClientRect().top
+		var bounds = element.getBoundingClientRect();
+		var xOffset = 0 - (bounds.right + 5);//random 5 for box shadows etc until I can work out how to reliably get them too
+		var yOffset = top - bounds.top;
+		this._styleTransform[i] = element.style.transform; //so we can put it back, just in case it's been set directly on the element
+		this._styleDisplay[i] = element.style.display; //so we can put it back, just in case it's been set directly on the element
+		element.style.transition = 'transform 0.3s ease';
+		element.style.transform = 'translate(' + xOffset + 'px, ' + yOffset + 'px)';
+	},
 
     _showControls: function() {
         this._makeMenuHideable();
