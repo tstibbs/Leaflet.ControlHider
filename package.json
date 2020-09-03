@@ -1,5 +1,6 @@
 {
     "name": "leaflet-control-hider",
     "version": "0.0.1",
+    "license": "Apache-2.0",
     "main": "src/hider.js"
 }
