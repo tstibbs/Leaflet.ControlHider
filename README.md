@@ -1,3 +1,6 @@
+[![License: AL2](https://img.shields.io/github/license/tstibbs/Leaflet.ControlHider)](LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/tstibbs/Leaflet.ControlHider.svg)](https://github.com/tstibbs/Leaflet.ControlHider/issues)
+
 ## What is this?
 
 This is a simple control that enables the user to show and hide other controls (e.g. zoom, layers, scale) with a single click. Useful particularly on mobile devices where screen space is limited.
