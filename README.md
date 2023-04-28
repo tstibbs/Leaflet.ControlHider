@@ -1,4 +1,8 @@
+## What is this?
+
 This is a simple control that enables the user to show and hide other controls (e.g. zoom, layers, scale) with a single click. Useful particularly on mobile devices where screen space is limited.
+
+## How can I try it?
 
 [Live demo](https://tstibbs.github.io/Leaflet.ControlHider/examples/index.html)
 
@@ -30,3 +34,7 @@ var map = L.map('map', {
     zoomControl: false
 });
 ```
+
+## Contributing
+
+PRs are very welcome, but for any big changes or new features please open an issue to discuss first.
