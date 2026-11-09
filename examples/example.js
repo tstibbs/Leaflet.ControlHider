@@ -1,3 +1,6 @@
+import * as L from 'leaflet';
+import { ControlHider } from '../src/hider.js';
+
 var streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
 });
@@ -14,7 +17,7 @@ var layerControl = new L.Control.Layers([streets], null, {position: 'topleft'});
 var zoom = new L.Control.Zoom();
 var attr = new L.Control.Attribution();
 var controls = [zoom, attr, layerControl];
-(new L.Control.ControlHider(controls)).addTo(map);
+(new ControlHider(controls)).addTo(map);
 
 zoom.addTo(map);
 layerControl.addTo(map);//non-hideable

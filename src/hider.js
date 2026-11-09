@@ -1,41 +1,43 @@
-L.Control.ControlHider = L.Control.extend({
+import * as L from 'leaflet';
+
+const ControlHider = L.Control.extend({
 	options: {
 		position: 'topleft',
 		tooltipOpen: 'Click to hide controls',
 		tooltipClosed: 'Click to show controls',
-		visibleByDefault: true // whether all controls should be visible on startup or not 
+		visibleByDefault: true // whether all controls should be visible on startup or not
 	},
-	
+
 	initialize: function(controls, options) {
 		L.setOptions(this, options);
-        this._controls = controls; //e.g. [zoomControl, locateControl];
-        this._styleTransform = [];
+		this._controls = controls; //e.g. [zoomControl, locateControl];
+		this._styleTransform = [];
 		this._styleDisplay = [];
-    },
+	},
 
-    onAdd: function(map) {
-        this._container = L.DomUtil.create('div', '');
+	onAdd: function(map) {
+		this._container = L.DomUtil.create('div', '');
 		this._container.id = 'hider-control';
 		var link = L.DomUtil.create('a', '', this._container);
 		link.href="#";
 		this._imgClosed = L.DomUtil.create('div', 'icon icon-closed', link);
-        this._imgClosed.title = this.options.tooltipClosed;
+		this._imgClosed.title = this.options.tooltipClosed;
 		this._imgOpen = L.DomUtil.create('div', 'icon icon-open', link);
-        this._imgOpen.title = this.options.tooltipOpen;
+		this._imgOpen.title = this.options.tooltipOpen;
 		if (this.options.visibleByDefault) {
 			this._makeMenuHideable();
 			this._showing = true;
 		} else {
-            this._makeMenuShowable();
-            this._showing = false;
-            this._listenForControlsAdded();
+			this._makeMenuShowable();
+			this._showing = false;
+			this._listenForControlsAdded();
 		}
         L.DomEvent.on(link, 'click', function(){
-            this._toggle();
-        }, this);
-        return this._container;
-    },
-	
+			this._toggle();
+		}, this);
+		return this._container;
+	},
+
 	_listenForControlsAdded: function() {
 		for (var i = 0; i < this._controls.length; i++) {
 			(function(i) {
@@ -59,29 +61,29 @@ L.Control.ControlHider = L.Control.extend({
 			}.bind(this))(i);//just scoping
 		}
 	},
-   
-    _toggle: function() {
-        if (this._showing) {
-            this._hideControls();
-            this._showing = false;
-        } else {
-            this._showControls();
-            this._showing = true;
-        }
-    },
-   
-    _makeMenuHideable: function() {
+
+	_toggle: function() {
+		if (this._showing) {
+			this._hideControls();
+			this._showing = false;
+		} else {
+			this._showControls();
+			this._showing = true;
+		}
+	},
+
+	_makeMenuHideable: function() {
 		L.DomUtil.addClass(this._container, 'open');
 		L.DomUtil.removeClass(this._container, 'closed');
-    },
-   
-    _makeMenuShowable: function() {
+	},
+
+	_makeMenuShowable: function() {
 		L.DomUtil.addClass(this._container, 'closed');
 		L.DomUtil.removeClass(this._container, 'open');
-    },
+	},
 
-    _hideControls: function() {
-        this._makeMenuShowable();
+	_hideControls: function() {
+		this._makeMenuShowable();
 		this._forEachControl(function(element, i) {
 			this._hideControl(element, i);
 		}.bind(this));//this._hideControl.bind(this));
@@ -91,8 +93,8 @@ L.Control.ControlHider = L.Control.extend({
 				element.style.display = 'none';
 			}.bind(this));
 		}.bind(this), 300);
-    },
-	
+	},
+
 	_hideControl: function(element, i) {
 		var top = this._container.getBoundingClientRect().top
 		var bounds = element.getBoundingClientRect();
@@ -104,8 +106,8 @@ L.Control.ControlHider = L.Control.extend({
 		element.style.transform = 'translate(' + xOffset + 'px, ' + yOffset + 'px)';
 	},
 
-    _showControls: function() {
-        this._makeMenuHideable();
+	_showControls: function() {
+		this._makeMenuHideable();
 		this._forEachControl(function(element, i) {
 			element.style.display = this._styleDisplay[i]; // if the style was empty string, then this is fine, it should clear it and revert to whatever css there was
 		}.bind(this));
@@ -115,8 +117,8 @@ L.Control.ControlHider = L.Control.extend({
 				element.style.transform = this._styleTransform[i]; // if the style was empty string, then this is fine, it should clear it and revert to whatever css there was
 			}.bind(this));
 		}.bind(this));
-    },
-	
+	},
+
 	_forEachControl: function(action) {
 		for (var i = 0; i < this._controls.length; i++) {
 			var element = this._controls[i].getContainer();
@@ -124,3 +126,7 @@ L.Control.ControlHider = L.Control.extend({
 		}
 	}
 });
+
+L.Control.ControlHider = ControlHider;
+
+export { ControlHider };

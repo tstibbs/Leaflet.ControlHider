@@ -13,27 +13,23 @@ This is a simple control that enables the user to show and hide other controls (
 
 ## How to use it
 
-Create the controls that you want to be controlled by the hider:
-```
-var zoom = new L.Control.Zoom();
-var attr = new L.Control.Attribution();
-```
+Import Leaflet and this module in an ES module context:
+```js
+import * as L from 'leaflet';
+import { ControlHider } from 'leaflet-control-hider';
 
-Create the hider control:
-```
-var hider = new L.Control.ControlHider([zoom, attr]);
-```
+const zoom = new L.Control.Zoom();
+const attr = new L.Control.Attribution();
+const hider = new ControlHider([zoom, attr]);
 
-Now add the controls in the order you want them to appear (hider icons are designed assuming it is at the top but it can be put anywhere):
-```
 hider.addTo(map);
 zoom.addTo(map);
 attr.addTo(map);
 ```
 
 Note to use with default controls (e.g. zoom) you must first stop leaflet adding them for you, like this:
-```
-var map = L.map('map', {
+```js
+const map = L.map('map', {
     zoomControl: false
 });
 ```
