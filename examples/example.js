@@ -13,7 +13,7 @@ var map = L.map('map', {
 var layerControl = new L.Control.Layers([streets], null, {position: 'topleft'});
 var zoom = new L.Control.Zoom();
 var attr = new L.Control.Attribution();
-var controls = [zoom, attr];
+var controls = [zoom, attr, layerControl];
 (new L.Control.ControlHider(controls)).addTo(map);
 
 zoom.addTo(map);
